@@ -47,10 +47,10 @@ bash install.sh
 
 ```bash
 # Windows (PowerShell)
-git clone https://github.com/<你的用户名>/memphis-resume-site.git "$env:USERPROFILE\.agents\skills\memphis-resume-site"
+git clone https://github.com/aladyaraya/memphis-resume-site.git "$env:USERPROFILE\.agents\skills\memphis-resume-site"
 
 # macOS / Linux
-git clone https://github.com/<你的用户名>/memphis-resume-site.git ~/.agents/skills/memphis-resume-site
+git clone https://github.com/aladyaraya/memphis-resume-site.git ~/.agents/skills/memphis-resume-site
 ```
 
 安装后重启 ZCode 或新开一个对话即可生效。
