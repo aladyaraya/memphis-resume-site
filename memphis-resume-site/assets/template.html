@@ -293,6 +293,7 @@ a{color:var(--text);text-decoration:none}
 .gpa-pink{background:#fde8ed;color:#d46a80}
 .gpa-mint{background:#e6f5ec;color:#5a9e7a}
 .edu-card .courses{margin-top:8px}
+.edu-courses{font-size:12px;color:var(--text-light);margin-top:8px;line-height:1.6}
 
 /* ===== Work ===== */
 .work-summary{
@@ -555,6 +556,14 @@ body.editing [data-editable]:focus{
     </div>
   </div>
 
+  <!-- ===== Education ===== -->
+  <div class="section" id="sec-edu">
+    <div class="section-title title-edu">
+      <span class="title-icon icon-edu">🎓</span> 教育背景
+    </div>
+    <div class="edu-grid" id="eduGrid"></div>
+  </div>
+
   <!-- ===== Internships ===== -->
   <div class="section" id="sec-intern">
     <div class="section-title title-intern">
@@ -643,6 +652,9 @@ const defaultData = {
     title: "示例头衔",
     photo: ""
   },
+  education: [
+    { school: "示例大学", degree: "示例专业（本科）", period: "2018.09 - 2022.06", gpa: "GPA 3.5/4.0", courses: "示例课程一、示例课程二" }
+  ],
   work: {
     company: "示例公司",
     role: "示例职位",
@@ -722,12 +734,18 @@ function renderAll(){
   document.getElementById('workSummary').textContent = w.summary || '';
   renderHeaderContact();
   renderWorkProjects();
+  renderEducation();
   renderInternships();
   renderProjects();
   renderAwards();
   renderSkills();
   renderIndustry();
   renderContact();
+  // 隐藏空板块
+  document.getElementById('sec-work').style.display = ((resumeData.work || {}).company) ? '' : 'none';
+  document.getElementById('sec-edu').style.display = (resumeData.education || []).length ? '' : 'none';
+  document.getElementById('sec-intern').style.display = (resumeData.internships || []).length ? '' : 'none';
+  document.getElementById('sec-industry').style.display = (resumeData.industryExperience || []).length ? '' : 'none';
   // Bind editable elements
   bindEditable();
   // Photo
@@ -760,6 +778,25 @@ function renderWorkProjects(){
         <span style="font-size:15px;font-weight:700;color:var(--blue)" data-editable="true" data-key="work.projects.${i}.name">${p.name}</span>
       </div>
       <div style="font-size:14px;line-height:1.7" data-editable="true" data-key="work.projects.${i}.description">${p.description}</div>
+    </div>
+  `).join('');
+}
+
+// ===== Render Education =====
+function renderEducation(){
+  const g=document.getElementById('eduGrid');
+  const accents=['accent-pink','accent-blue'];
+  g.innerHTML=(resumeData.education||[]).map((e,i)=>`
+    <div class="card edu-card"><div class="card-accent ${accents[i%accents.length]}"></div>
+      <div class="card-header">
+        <div>
+          <div class="card-title" data-editable="true" data-key="education.${i}.school">${e.school}</div>
+          <div class="card-subtitle" data-editable="true" data-key="education.${i}.degree">${e.degree}</div>
+        </div>
+        <div class="card-period" data-editable="true" data-key="education.${i}.period">${e.period}</div>
+      </div>
+      ${e.gpa?`<span class="gpa gpa-mint" data-editable="true" data-key="education.${i}.gpa">${e.gpa}</span>`:''}
+      ${e.courses?`<div class="edu-courses" data-editable="true" data-key="education.${i}.courses">📚 ${e.courses}</div>`:''}
     </div>
   `).join('');
 }

@@ -7,6 +7,7 @@
 ```js
 {
   personal:   { name, nameEn, title, photo },
+  education:  [ { school, degree, period, gpa, courses } ],
   work:       { company, role, period, summary, projects[] },
   internships:[ { company, role, period, details[] } ],
   projects:   [ { name, role, period, intro, details[], result } ],
@@ -28,6 +29,18 @@
 | title | string | 头衔，如"嵌入式工程师/哈工大微电子和机器人双学位" |
 | photo | string | 照片 dataURL 或网络 URL；本地路径无效，留 `""`（用户可在页面点击头像上传） |
 
+### education — 教育背景
+数组，按时间倒序，每项：
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| school | string | 学校名 |
+| degree | string | 专业/学位，如"计算机科学与技术（本科）" |
+| period | string | 时间段 |
+| gpa | string | GPA/排名，无则 `""` |
+| courses | string | 主修课程，无则 `""` |
+
+无教育信息时置 `[]`（页面会自动隐藏该板块）。
+
 ### work — 工作经历（正式工作，1 段或空对象）
 | 字段 | 类型 | 说明 |
 |------|------|------|
@@ -36,6 +49,7 @@
 | projects[] | array | 工作期间的代表项目 `{ name, description }` |
 
 没有正式工作时写 `{ company:"", role:"", period:"", summary:"", projects:[] }`。
+**多段正式工作**：最近一段放 `work`，其余段落放 `internships`（页面渲染成同款时间轴卡片；生成后提示用户可把"实习经历"标题在页面上直接改掉）。
 
 ### internships — 实习经历
 数组，每项 `{ company, role, period, details[] }`。`details` 是工作要点字符串数组，每条一句话。按时间倒序排列。

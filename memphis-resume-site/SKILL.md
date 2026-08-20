@@ -24,7 +24,11 @@ description: 把简历（docx/PDF/纯文本）一键做成孟菲斯风格的简�
   ```
   如果 python-docx 未安装（报 `ModuleNotFoundError: docx`），先 `pip install python-docx`，或改用 pandoc：`pandoc "<文件>" -t plain --wrap=none`。
 
-- **用户附带了 .pdf 文件**：`pandoc "<文件>" -t plain --wrap=none`；若 pandoc 不可用，尝试 `pdftotext "<文件>" -`。都失败时，礼貌地请用户直接粘贴简历文本。
+- **用户附带了 .pdf 文件**：同样运行
+  ```bash
+  python "scripts/extract_resume.py" "<文件绝对路径>"
+  ```
+  脚本内置多级兜底（pdftotext → pymupdf → pdfplumber）。注意：**pandoc 不支持读取 PDF**，不要用 pandoc 提取 PDF。全部失败时，礼貌地请用户直接粘贴简历文本。
 
 - **用户在消息里直接给了简历文字**：直接使用，跳过脚本。
 
@@ -64,7 +68,8 @@ description: 把简历（docx/PDF/纯文本）一键做成孟菲斯风格的简�
 
 - [ ] `index.html` 中恰好有一对 `RESUME_DATA_START` / `RESUME_DATA_END` 标记
 - [ ] `defaultData.personal.name` 非空，contact 至少有一个联系方式
-- [ ] 页面包含：头部（姓名/头衔/联系方式）、工作经历、实习经历、项目经历、竞赛获奖、技能 & 证书、行业经历、联系方式、页脚
+- [ ] 页面包含：头部（姓名/头衔/联系方式）、工作经历、教育背景、实习经历、项目经历、竞赛获奖、技能 & 证书、行业经历、联系方式、页脚
+- [ ] 无数据的板块自动隐藏（模板会隐藏空的 education/internships/industryExperience）
 - [ ] 编辑功能齐全：右下角 ✎ 按钮 → 编辑模式 → 文字可点击修改 → 保存到本地 / 导出 JSON / 恢复默认
 - [ ] 用浏览器打开测试（能用浏览器时）；提醒用户：双击 index.html 即可查看，点 ✎ 即可修改内容，数据保存在浏览器 localStorage
 

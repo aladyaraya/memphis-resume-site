@@ -41,20 +41,35 @@ def extract_docx(path):
 
 
 def extract_pdf(path):
-    candidates = [
-        ['pandoc', path, '-t', 'plain', '--wrap=none'],
-        ['pdftotext', path, '-'],
-    ]
-    for cmd in candidates:
+    # 方案一：pdftotext（poppler）
+    try:
+        r = subprocess.run(['pdftotext', path, '-'],
+                           capture_output=True, text=True, timeout=60)
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout
+    except (FileNotFoundError, subprocess.TimeoutExpired, OSError):
+        pass
+
+    # 方案二：Python 库兜底（pymupdf 优先，pdfplumber 次之）
+    for lib in ('pymupdf', 'pdfplumber'):
         try:
-            r = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
-            if r.returncode == 0 and r.stdout.strip():
-                return r.stdout
-        except (FileNotFoundError, subprocess.TimeoutExpired, OSError):
+            if lib == 'pymupdf':
+                import pymupdf
+                doc = pymupdf.open(path)
+                text = '\n'.join(page.get_text('text') for page in doc)
+                doc.close()
+            else:
+                import pdfplumber
+                with pdfplumber.open(path) as pdf:
+                    text = '\n'.join((p.extract_text() or '') for p in pdf.pages)
+            if text.strip():
+                return text
+        except Exception:
             continue
+
     raise RuntimeError(
-        'PDF 提取失败：本机缺少 pandoc 或 pdftotext。'
-        '请让用户直接粘贴简历文本，或安装 pandoc 后重试。'
+        'PDF 提取失败：本机缺少 pdftotext（poppler）或 Python PDF 库。'
+        '请让用户直接粘贴简历文本，或安装 poppler 后重试。'
     )
 
 
