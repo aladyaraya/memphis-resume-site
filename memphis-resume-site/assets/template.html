@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>个人简历</title>
+<!--
+  ⚠️ 本文件是 memphis-resume-site 技能的模板。
+  生成网站时：只替换下方 RESUME_DATA_START / RESUME_DATA_END 标记之间的
+  defaultData 内容，其余部分（样式、结构、编辑逻辑）一律不要改动。
+-->
+<style>
+/* ===== CSS Variables ===== */
+:root {
+  --pink: #F4A7B9;
+  --yellow: #F9E07B;
+  --mint: #A8D8B9;
+  --blue: #89C4E1;
+  --purple: #C3AED6;
+  --warm: #F5F0EB;
+  --bg: #FEFBF6;
+  --text: #4A4A4A;
+  --text-light: #777;
+  --card-bg: #fff;
+  --shadow: 0 4px 20px rgba(0,0,0,0.06);
+  --radius: 16px;
+  --section-gap: 48px;
+  --transition: 0.3s ease;
+}
+/* ===== Reset ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family: "PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+  position: relative;
+}
+a{color:var(--text);text-decoration:none}
+
+/* ===== Memphis Background Decorations ===== */
+.bg-deco{position:fixed;pointer-events:none;z-index:0}
+.bg-deco.circle{
+  border-radius:50%;opacity:0.25;
+}
+.bg-deco.dot-grid{
+  width:120px;height:120px;
+  background-image: radial-gradient(circle, var(--pink) 2px, transparent 2px);
+  background-size: 20px 20px;
+}
+.bg-deco.squiggle{
+  width:180px;height:60px;
+  border:3px solid var(--purple);
+  border-radius:50%;
+  border-color:transparent transparent var(--purple) transparent;
+  opacity:0.2;
+}
+.bg-deco.triangle{
+  width:0;height:0;
+  border-left:40px solid transparent;
+  border-right:40px solid transparent;
+  border-bottom:70px solid var(--yellow);
+  opacity:0.2;
+}
+.deco-1{top:10%;left:3%;width:80px;height:80px;background:var(--pink)}
+.deco-2{top:25%;right:5%;width:60px;height:60px;background:var(--mint)}
+.deco-3{top:50%;left:6%}
+.deco-4{bottom:20%;right:4%}
+.deco-5{top:70%;left:90%}
+.deco-6{bottom:10%;left:10%;width:100px;height:100px;background:var(--blue)}
+
+/* ===== Main Container ===== */
+.main{
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Header ===== */
+.header{
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 48px 40px;
+  margin-bottom: var(--section-gap);
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.header::before{
+  content:'';
+  position:absolute;
+  top:-30px;right:-30px;
+  width:120px;height:120px;
+  border-radius:50%;
+  background:var(--yellow);
+  opacity:0.5;
+}
+.header::after{
+  content:'';
+  position:absolute;
+  bottom:-20px;left:-20px;
+  width:80px;height:80px;
+  border-radius:50%;
+  background:var(--mint);
+  opacity:0.4;
+}
+.avatar-wrap{
+  flex-shrink:0;
+  position:relative;
+  z-index:1;
+  cursor:pointer;
+  transition:var(--transition);
+}
+.avatar{
+  width:120px;height:120px;
+  border-radius:50%;
+  background: linear-gradient(135deg, var(--pink), var(--blue));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:48px;
+  color:#fff;
+  font-weight:bold;
+  position:relative;
+  overflow:hidden;
+  border:4px solid #fff;
+  box-shadow: 0 4px 16px rgba(244,167,185,0.3);
+}
+.avatar img{
+  width:100%;height:100%;object-fit:cover;
+  position:absolute;top:0;left:0;
+}
+.avatar-upload-hint{
+  position:absolute;bottom:-6px;left:50%;
+  transform:translateX(-50%);
+  background:var(--purple);color:#fff;
+  font-size:11px;padding:2px 10px;
+  border-radius:10px;
+  white-space:nowrap;
+  opacity:0;transition:var(--transition);
+}
+.avatar-wrap:hover .avatar-upload-hint{opacity:1}
+.header-info{z-index:1}
+.header-info h1{
+  font-size:36px;font-weight:800;
+  letter-spacing:4px;color:var(--text);
+}
+.header-info .subtitle{
+  font-size:15px;color:var(--text-light);
+  margin:4px 0 12px;
+}
+.contact-row{
+  display:flex;flex-wrap:wrap;
+  gap:10px 20px;
+  font-size:13px;color:var(--text-light);
+}
+.contact-row span{
+  display:inline-flex;align-items:center;
+  gap:4px;
+}
+.contact-dot{
+  width:6px;height:6px;
+  border-radius:50%;
+  display:inline-block;
+}
+.dot-pink{background:var(--pink)}
+.dot-yellow{background:var(--yellow)}
+.dot-mint{background:var(--mint)}
+.dot-blue{background:var(--blue)}
+.dot-purple{background:var(--purple)}
+
+/* ===== Section ===== */
+.section{margin-bottom:var(--section-gap)}
+.section-title{
+  display:inline-flex;align-items:center;
+  gap:12px;
+  font-size:22px;font-weight:700;
+  margin-bottom:24px;
+  position:relative;
+}
+.section-title::after{
+  content:'';
+  flex:1;height:3px;min-width:40px;
+  border-radius:2px;
+}
+.title-edu::after{background:var(--pink)}
+.title-work::after{background:var(--blue)}
+.title-intern::after{background:var(--purple)}
+.title-proj::after{background:var(--mint)}
+.title-award::after{background:var(--yellow)}
+.title-skill::after{background:var(--pink)}
+
+.title-icon{
+  width:32px;height:32px;
+  border-radius:8px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  color:#fff;
+  flex-shrink:0;
+}
+.icon-edu{background:var(--pink)}
+.icon-work{background:var(--blue)}
+.icon-intern{background:var(--purple)}
+.icon-proj{background:var(--mint)}
+.icon-award{background:var(--yellow);color:var(--text)}
+.icon-skill{background:var(--pink)}
+
+/* ===== Card ===== */
+.card{
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:28px 32px;
+  margin-bottom:20px;
+  position:relative;
+  overflow:hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(0,0,0,0.1);
+}
+.card-accent{
+  position:absolute;top:0;left:0;
+  width:4px;height:100%;
+  border-radius:2px 0 0 2px;
+}
+.accent-pink{background:var(--pink)}
+.accent-blue{background:var(--blue)}
+.accent-purple{background:var(--purple)}
+.accent-mint{background:var(--mint)}
+.accent-yellow{background:var(--yellow)}
+
+.card-header{
+  display:flex;justify-content:space-between;
+  align-items:flex-start;flex-wrap:wrap;
+  gap:8px;margin-bottom:12px;
+}
+.card-title{font-size:17px;font-weight:700}
+.card-subtitle{font-size:13px;color:var(--text-light)}
+.card-period{
+  font-size:12px;color:var(--text-light);
+  background:var(--warm);padding:3px 12px;
+  border-radius:12px;white-space:nowrap;
+}
+.card-body{font-size:14px;line-height:1.8}
+.card-body ul{padding-left:20px;margin-top:8px}
+.card-body li{margin-bottom:6px;list-style-type:none;position:relative}
+.card-body li::before{
+  content:'';
+  position:absolute;left:-20px;top:10px;
+  width:8px;height:8px;border-radius:2px;
+  transform:rotate(45deg);
+}
+.card-body li:nth-child(4n+1)::before{background:var(--pink)}
+.card-body li:nth-child(4n+2)::before{background:var(--blue)}
+.card-body li:nth-child(4n+3)::before{background:var(--mint)}
+.card-body li:nth-child(4n+4)::before{background:var(--purple)}
+
+.tag{
+  display:inline-block;font-size:12px;
+  padding:3px 10px;margin:3px 4px;
+  border-radius:12px;font-weight:500;
+}
+.tag-pink{background:#fde8ed;color:#d46a80}
+.tag-blue{background:#e3f2f9;color:#5a9ab5}
+.tag-mint{background:#e6f5ec;color:#5a9e7a}
+.tag-purple{background:#f0eaf5;color:#8b6baa}
+.tag-yellow{background:#fdf5d6;color:#b8a030}
+
+/* ===== Education ===== */
+.edu-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+.edu-card .school{font-size:17px;font-weight:700}
+.edu-card .meta{font-size:13px;color:var(--text-light);margin:4px 0}
+.edu-card .gpa{
+  display:inline-block;
+  font-weight:700;font-size:13px;
+  padding:2px 10px;border-radius:10px;
+  margin:4px 0 8px;
+}
+.gpa-pink{background:#fde8ed;color:#d46a80}
+.gpa-mint{background:#e6f5ec;color:#5a9e7a}
+.edu-card .courses{margin-top:8px}
+
+/* ===== Work ===== */
+.work-summary{
+  font-size:14px;margin-bottom:20px;
+  padding:16px 20px;
+  background:var(--warm);
+  border-radius:12px;
+}
+
+/* ===== Projects Grid ===== */
+.projects-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+.project-card .card-title{font-size:16px}
+.project-intro{
+  font-size:13px;color:var(--text-light);
+  font-style:italic;margin-bottom:10px;
+}
+.project-result{
+  margin-top:12px;padding:10px 14px;
+  background:var(--warm);border-radius:10px;
+  font-size:13px;font-weight:600;
+  display:flex;align-items:center;gap:6px;
+}
+
+/* ===== Awards (two columns) ===== */
+.awards-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+.award-column h4{
+  font-size:14px;margin-bottom:12px;
+  padding-bottom:8px;
+  border-bottom:2px dashed var(--pink);
+}
+.award-item{
+  display:flex;justify-content:space-between;
+  align-items:baseline;gap:8px;
+  padding:8px 0;border-bottom:1px solid #f0ebe3;
+  font-size:14px;
+}
+.award-item .award-date{
+  font-size:12px;color:var(--text-light);
+  white-space:nowrap;
+}
+
+/* ===== Skills ===== */
+.skills-block{margin-bottom:16px}
+.skills-block h4{
+  font-size:14px;margin-bottom:8px;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.skills-block h4::before{
+  content:'';width:10px;height:10px;
+  border-radius:3px;display:inline-block;
+}
+.skills-block:nth-child(4n+1) h4::before{background:var(--pink)}
+.skills-block:nth-child(4n+2) h4::before{background:var(--blue)}
+.skills-block:nth-child(4n+3) h4::before{background:var(--mint)}
+.skills-block:nth-child(4n+4) h4::before{background:var(--purple)}
+
+.cert-list{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin-top:16px;padding-top:16px;
+  border-top:1px dashed #e8e0d8;
+}
+.cert-item{
+  font-size:13px;padding:6px 14px;
+  background:var(--card-bg);
+  border:1px solid #e8e0d8;
+  border-radius:20px;
+}
+
+/* ===== Industry ===== */
+.industry-bar{
+  display:flex;flex-wrap:wrap;gap:12px;
+}
+.industry-item{
+  font-size:14px;padding:8px 18px;
+  background:var(--warm);border-radius:20px;
+  font-weight:500;
+}
+
+/* ===== Contact ===== */
+.contact-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:16px;
+}
+.contact-item{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 18px;
+  background:var(--warm);
+  border-radius:12px;
+  font-size:14px;
+  transition:var(--transition);
+}
+.contact-item:hover{background:#ebe3d8}
+.contact-icon{
+  width:36px;height:36px;
+  border-radius:10px;
+  display:flex;align-items:center;
+  justify-content:center;
+  font-size:18px;
+  flex-shrink:0;
+}
+.ci-pink{background:var(--pink);color:#fff}
+.ci-blue{background:var(--blue);color:#fff}
+.ci-mint{background:var(--mint);color:#fff}
+.ci-purple{background:var(--purple);color:#fff}
+.ci-yellow{background:var(--yellow);color:var(--text)}
+.contact-item a{color:var(--text);word-break:break-all}
+.contact-item a:hover{color:var(--blue)}
+
+/* ===== Footer ===== */
+.footer{
+  text-align:center;padding:40px 0 20px;
+  position:relative;
+}
+.footer-deco{
+  display:flex;justify-content:center;gap:16px;
+  margin-bottom:16px;
+}
+.footer-dot{
+  width:12px;height:12px;border-radius:50%;
+}
+.footer p{font-size:12px;color:var(--text-light)}
+
+/* ===== Edit Mode Toggle ===== */
+.edit-bar{
+  position:fixed;bottom:24px;right:24px;
+  z-index:1000;
+  display:flex;flex-direction:column;
+  gap:8px;align-items:flex-end;
+}
+.edit-btn{
+  width:48px;height:48px;border-radius:50%;
+  border:none;cursor:pointer;
+  font-size:20px;
+  background:var(--text);color:#fff;
+  box-shadow:0 4px 16px rgba(0,0,0,0.2);
+  transition:var(--transition);
+  display:flex;align-items:center;justify-content:center;
+}
+.edit-btn:hover{transform:scale(1.1)}
+.edit-btn.active{background:var(--pink)}
+.edit-actions{
+  display:none;flex-direction:column;
+  gap:6px;
+}
+.edit-actions.show{display:flex}
+.edit-actions button{
+  padding:6px 14px;border:none;border-radius:16px;
+  cursor:pointer;font-size:12px;
+  background:#fff;color:var(--text);
+  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+  transition:var(--transition);
+  white-space:nowrap;
+}
+.edit-actions button:hover{background:var(--warm)}
+.edit-actions .btn-reset{color:#d46a80}
+.edit-actions .btn-save{color:#5a9ab5}
+
+/* ===== Editable Highlight ===== */
+body.editing [data-editable]{
+  outline:2px dashed var(--blue);
+  outline-offset:2px;
+  border-radius:4px;
+  cursor:text;
+}
+body.editing [data-editable]:hover{
+  outline-color:var(--pink);
+}
+body.editing [data-editable]:focus{
+  outline-style:solid;
+  outline-color:var(--purple);
+}
+
+/* ===== Photo Upload ===== */
+#photoInput{display:none}
+
+/* ===== Toast ===== */
+.toast{
+  position:fixed;top:24px;left:50%;
+  transform:translateX(-50%);
+  background:var(--text);color:#fff;
+  padding:10px 24px;border-radius:20px;
+  font-size:14px;z-index:2000;
+  opacity:0;transition:opacity 0.3s;
+  pointer-events:none;
+}
+.toast.show{opacity:1}
+
+/* ===== Responsive ===== */
+@media(max-width:768px){
+  .main{padding:24px 16px 60px}
+  .header{flex-direction:column;text-align:center;gap:20px;padding:32px 20px}
+  .contact-row{justify-content:center}
+  .edu-grid,.projects-grid,.awards-grid{grid-template-columns:1fr}
+  .card{padding:20px}
+  .card-header{flex-direction:column}
+  .card-body ul{padding-left:16px}
+  .card-body li::before{left:-16px;width:6px;height:6px;top:8px}
+  .section-title{font-size:20px}
+  .header-info h1{font-size:28px}
+  .edit-bar{bottom:16px;right:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- Background Memphis Decorations -->
+<div class="bg-deco circle deco-1"></div>
+<div class="bg-deco circle deco-2"></div>
+<div class="bg-deco dot-grid bg-deco deco-3"></div>
+<div class="bg-deco squiggle bg-deco deco-4"></div>
+<div class="bg-deco triangle bg-deco deco-5"></div>
+<div class="bg-deco circle deco-6"></div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- ===== Header ===== -->
+  <div class="header">
+    <div class="avatar-wrap" id="avatarWrap">
+      <div class="avatar" id="avatar">
+        <span id="avatarInitial" data-editable="false">姓</span>
+        <img id="avatarImg" src="" alt="" style="display:none">
+      </div>
+      <span class="avatar-upload-hint">点击上传</span>
+    </div>
+    <input type="file" id="photoInput" accept="image/*">
+    <div class="header-info">
+      <h1 data-editable="true" data-key="personal.name" id="headerName"></h1>
+      <div class="subtitle" data-editable="true" data-key="personal.title" id="headerTitle"></div>
+      <div class="contact-row" id="headerContactRow">
+        <!-- rendered by JS from contact data -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Work Experience ===== -->
+  <div class="section" id="sec-work">
+    <div class="section-title title-work">
+      <span class="title-icon icon-work">💼</span> 工作经历
+    </div>
+    <div class="card"><div class="card-accent accent-blue"></div>
+      <div class="card-header">
+        <div>
+          <div class="card-title" data-editable="true" data-key="work.company" id="workCompany"></div>
+          <div class="card-subtitle" data-editable="true" data-key="work.role" id="workRole"></div>
+        </div>
+        <div class="card-period" data-editable="true" data-key="work.period" id="workPeriod"></div>
+      </div>
+      <div class="work-summary" data-editable="true" data-key="work.summary" id="workSummary"></div>
+      <div id="workProjects"></div>
+    </div>
+  </div>
+
+  <!-- ===== Internships ===== -->
+  <div class="section" id="sec-intern">
+    <div class="section-title title-intern">
+      <span class="title-icon icon-intern">🔬</span> 实习经历
+    </div>
+    <div id="internGrid"></div>
+  </div>
+
+  <!-- ===== Projects ===== -->
+  <div class="section" id="sec-proj">
+    <div class="section-title title-proj">
+      <span class="title-icon icon-proj">🚀</span> 项目经历
+    </div>
+    <div class="projects-grid" id="projectsGrid"></div>
+  </div>
+
+  <!-- ===== Awards ===== -->
+  <div class="section" id="sec-award">
+    <div class="section-title title-award">
+      <span class="title-icon icon-award">🏆</span> 竞赛获奖
+    </div>
+    <div class="awards-grid" id="awardsGrid"></div>
+  </div>
+
+  <!-- ===== Skills & Certs ===== -->
+  <div class="section" id="sec-skill">
+    <div class="section-title title-skill">
+      <span class="title-icon icon-skill">🛠</span> 技能 & 证书
+    </div>
+    <div class="card"><div class="card-accent accent-pink"></div>
+      <div id="skillsContent"></div>
+      <div class="cert-list" id="certList"></div>
+    </div>
+  </div>
+
+  <!-- ===== Industry Experience ===== -->
+  <div class="section" id="sec-industry">
+    <div class="section-title title-award">
+      <span class="title-icon icon-award">🎤</span> 行业经历
+    </div>
+    <div class="industry-bar" id="industryBar"></div>
+  </div>
+
+  <!-- ===== Contact ===== -->
+  <div class="section" id="sec-contact">
+    <div class="section-title title-work">
+      <span class="title-icon icon-work">📬</span> 联系方式
+    </div>
+    <div class="card"><div class="card-accent accent-blue"></div>
+      <div class="contact-grid" id="contactGrid"></div>
+    </div>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <div class="footer">
+    <div class="footer-deco">
+      <div class="footer-dot" style="background:var(--pink)"></div>
+      <div class="footer-dot" style="background:var(--yellow)"></div>
+      <div class="footer-dot" style="background:var(--mint)"></div>
+      <div class="footer-dot" style="background:var(--blue)"></div>
+      <div class="footer-dot" style="background:var(--purple)"></div>
+    </div>
+    <p>© <span id="footerYear"></span> <span id="footerName"></span> · Memphis Style Resume</p>
+  </div>
+
+</div>
+
+<!-- ===== Edit Toolbar ===== -->
+<div class="edit-bar">
+  <div class="edit-actions" id="editActions">
+    <button class="btn-save" onclick="saveData()">💾 保存到本地</button>
+    <button class="btn-reset" onclick="resetData()">↺ 恢复默认</button>
+    <button onclick="exportJSON()">📥 导出 JSON</button>
+  </div>
+  <button class="edit-btn" id="editBtn" onclick="toggleEdit()" title="编辑模式">✎</button>
+</div>
+
+<script>
+// ============ RESUME_DATA_START ============
+// 生成网站时替换以下 defaultData 对象（保留这行声明与上下标记）。
+// 字段定义见技能目录 references/data-schema.md
+const defaultData = {
+  personal: {
+    name: "示例姓名",
+    nameEn: "Example",
+    title: "示例头衔",
+    photo: ""
+  },
+  work: {
+    company: "示例公司",
+    role: "示例职位",
+    period: "2025.01 - 至今",
+    summary: "示例工作概述。",
+    projects: [
+      { name: "示例项目", description: "示例项目描述。" }
+    ]
+  },
+  internships: [
+    { company: "示例公司", role: "示例岗位", period: "2024.01 - 2024.06", details: ["示例工作内容一", "示例工作内容二"] }
+  ],
+  projects: [
+    {
+      name: "示例项目名称",
+      role: "项目角色",
+      period: "2025.01 - 2025.06",
+      intro: "一句话项目介绍",
+      details: ["职责一", "职责二"],
+      result: "项目成果"
+    }
+  ],
+  awards: {
+    recent: [
+      { name: "示例奖项", date: "2025.06" }
+    ],
+    university: [
+      { name: "示例竞赛奖项", date: "2024.10" }
+    ]
+  },
+  skills: {
+    programming: { label: "编程语言", tags: ["Python", "C++"] },
+    other: { label: "其他", tags: ["示例技能"] }
+  },
+  certificates: ["示例证书"],
+  industryExperience: ["示例行业经历"],
+  contact: {
+    wechat: "",
+    github: "",
+    phone: "",
+    email: "",
+    blog: "",
+    location: ""
+  }
+};
+// ============ RESUME_DATA_END ============
+
+let resumeData = {};
+let isEditing = false;
+let photoDataUrl = '';
+
+// ===== Toast =====
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
+
+// ===== Load Data =====
+async function loadData(){
+  // Try localStorage first
+  const stored = localStorage.getItem('resumeData');
+  if(stored){try{resumeData=JSON.parse(stored);if(resumeData.personal){renderAll();return}}catch(e){}}
+  // Fallback to embedded default data
+  resumeData = JSON.parse(JSON.stringify(defaultData));
+  renderAll();
+}
+
+// ===== Render All =====
+function renderAll(){
+  document.title = ((resumeData.personal && resumeData.personal.name) || '个人') + ' — 个人简历';
+  document.getElementById('footerName').textContent = (resumeData.personal && resumeData.personal.name) || '';
+  document.getElementById('footerYear').textContent = new Date().getFullYear();
+  document.getElementById('headerName').textContent = (resumeData.personal && resumeData.personal.name) || '';
+  document.getElementById('headerTitle').textContent = (resumeData.personal && resumeData.personal.title) || '';
+  document.getElementById('avatarInitial').textContent = ((resumeData.personal && resumeData.personal.name) || '姓').charAt(0);
+  const w = resumeData.work || {};
+  document.getElementById('workCompany').textContent = w.company || '';
+  document.getElementById('workRole').textContent = w.role || '';
+  document.getElementById('workPeriod').textContent = w.period || '';
+  document.getElementById('workSummary').textContent = w.summary || '';
+  renderHeaderContact();
+  renderWorkProjects();
+  renderInternships();
+  renderProjects();
+  renderAwards();
+  renderSkills();
+  renderIndustry();
+  renderContact();
+  // Bind editable elements
+  bindEditable();
+  // Photo
+  const p=resumeData.personal;
+  if(p&&p.photo){
+    document.getElementById('avatarImg').src=p.photo;
+    document.getElementById('avatarImg').style.display='';
+    document.getElementById('avatarInitial').style.display='none';
+    photoDataUrl=p.photo;
+  }
+}
+
+// ===== Render Header Contact =====
+function renderHeaderContact(){
+  const c=resumeData.contact||{};
+  const items=[];
+  if(c.phone) items.push(`<span><span class="contact-dot dot-pink"></span> <span data-editable="true" data-key="contact.phone">${c.phone}</span></span>`);
+  if(c.email) items.push(`<span><span class="contact-dot dot-yellow"></span> <span data-editable="true" data-key="contact.email">${c.email}</span></span>`);
+  if(c.location) items.push(`<span><span class="contact-dot dot-mint"></span> <span data-editable="true" data-key="contact.location">${c.location}</span></span>`);
+  if(c.wechat) items.push(`<span><span class="contact-dot dot-blue"></span> 微信：<span data-editable="true" data-key="contact.wechat">${c.wechat}</span></span>`);
+  document.getElementById('headerContactRow').innerHTML=items.join('');
+}
+
+// ===== Render Work Projects =====
+function renderWorkProjects(){
+  const c=document.getElementById('workProjects');
+  c.innerHTML=(resumeData.work.projects||[]).map((p,i)=>`
+    <div style="margin-bottom:16px;padding-top:16px;border-top:1px dashed #e8e0d8">
+      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px">
+        <span style="font-size:15px;font-weight:700;color:var(--blue)" data-editable="true" data-key="work.projects.${i}.name">${p.name}</span>
+      </div>
+      <div style="font-size:14px;line-height:1.7" data-editable="true" data-key="work.projects.${i}.description">${p.description}</div>
+    </div>
+  `).join('');
+}
+
+// ===== Render Internships =====
+function renderInternships(){
+  const g=document.getElementById('internGrid');
+  const accents=['accent-purple','accent-blue'];
+  g.innerHTML=(resumeData.internships||[]).map((intern,i)=>`
+    <div class="card"><div class="card-accent ${accents[i%accents.length]}"></div>
+      <div class="card-header">
+        <div>
+          <div class="card-title" data-editable="true" data-key="internships.${i}.company">${intern.company}</div>
+          <div class="card-subtitle" data-editable="true" data-key="internships.${i}.role">${intern.role}</div>
+        </div>
+        <div class="card-period" data-editable="true" data-key="internships.${i}.period">${intern.period}</div>
+      </div>
+      <div class="card-body"><ul>
+        ${(intern.details||[]).map((d,j)=>`<li data-editable="true" data-key="internships.${i}.details.${j}">${d}</li>`).join('')}
+      </ul></div>
+    </div>
+  `).join('');
+}
+
+// ===== Render Projects =====
+function renderProjects(){
+  const g=document.getElementById('projectsGrid');
+  const accents=['accent-mint','accent-yellow','accent-blue','accent-pink'];
+  g.innerHTML=(resumeData.projects||[]).map((p,i)=>`
+    <div class="card project-card"><div class="card-accent ${accents[i%accents.length]}"></div>
+      <div class="card-header">
+        <div>
+          <div class="card-title" data-editable="true" data-key="projects.${i}.name">${p.name}</div>
+          <div class="card-subtitle" data-editable="true" data-key="projects.${i}.role">${p.role}</div>
+        </div>
+        <div class="card-period" data-editable="true" data-key="projects.${i}.period">${p.period}</div>
+      </div>
+      <div class="project-intro" data-editable="true" data-key="projects.${i}.intro">${p.intro}</div>
+      <div class="card-body"><ul>
+        ${(p.details||[]).map((d,j)=>`<li data-editable="true" data-key="projects.${i}.details.${j}">${d}</li>`).join('')}
+      </ul></div>
+      ${p.result?`<div class="project-result">✨ <span data-editable="true" data-key="projects.${i}.result">${p.result}</span></div>`:''}
+    </div>
+  `).join('');
+}
+
+// ===== Render Awards =====
+function renderAwards(){
+  const g=document.getElementById('awardsGrid');
+  const a=resumeData.awards||{recent:[],university:[]};
+  g.innerHTML=`
+    <div class="award-column">
+      <h4>🏅 近期黑客松 &amp; 企业奖项</h4>
+      ${(a.recent||[]).map((x,i)=>`
+        <div class="award-item"><span data-editable="true" data-key="awards.recent.${i}.name">${x.name}</span><span class="award-date" data-editable="true" data-key="awards.recent.${i}.date">${x.date}</span></div>
+      `).join('')}
+    </div>
+    <div class="award-column">
+      <h4>🎖 大学 &amp; 传统竞赛</h4>
+      ${(a.university||[]).map((x,i)=>`
+        <div class="award-item"><span data-editable="true" data-key="awards.university.${i}.name">${x.name}</span><span class="award-date" data-editable="true" data-key="awards.university.${i}.date">${x.date}</span></div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// ===== Render Skills =====
+function renderSkills(){
+  const c=document.getElementById('skillsContent');
+  const s=resumeData.skills||{};
+  c.innerHTML=Object.entries(s).map(([k,v],i)=>`
+    <div class="skills-block">
+      <h4 data-editable="true" data-key="skills.${k}.label">${(v&&v.label)?v.label:k}</h4>
+      <div data-editable="true" data-key="skills.${k}.tags">${(v&&Array.isArray(v.tags))?v.tags.map((t,j)=>`<span class="tag ${['tag-pink','tag-blue','tag-mint','tag-purple','tag-yellow'][j%5]}">${t}</span>`).join(''):(v&&v.tags?v.tags:'')}</div>
+    </div>
+  `).join('');
+  // Certs
+  document.getElementById('certList').innerHTML=(resumeData.certificates||[]).map((x,i)=>`
+    <div class="cert-item" data-editable="true" data-key="certificates.${i}">${x}</div>
+  `).join('');
+}
+
+// ===== Render Industry =====
+function renderIndustry(){
+  document.getElementById('industryBar').innerHTML=(resumeData.industryExperience||[]).map((e,i)=>`
+    <div class="industry-item" data-editable="true" data-key="industryExperience.${i}">${e}</div>
+  `).join('');
+}
+
+// ===== Render Contact =====
+function renderContact(){
+  const c=resumeData.contact||{};
+  const icons={wechat:'💬',github:'🐙',phone:'📱',email:'📧',blog:'🌐',location:'📍'};
+  const labels={wechat:'微信',github:'GitHub',phone:'电话',email:'邮箱',blog:'博客',location:'所在地'};
+  const colors=['ci-pink','ci-blue','ci-mint','ci-purple','ci-yellow'];
+  let idx=0;
+  document.getElementById('contactGrid').innerHTML=Object.entries(c).filter(([,v])=>v).map(([k,v])=>{
+    const icon=icons[k]||'📌';
+    const label=labels[k]||k;
+    const color=colors[idx%colors.length];idx++;
+    const isLink=k==='github'||k==='blog'||k==='linkedin';
+    const href=isLink?(v.startsWith('http')?v:'https://'+v):null;
+    const display=isLink?`<a href="${href}" target="_blank" rel="noopener">${v}</a>`:`<span data-editable="true" data-key="contact.${k}">${v}</span>`;
+    return `<div class="contact-item"><span class="contact-icon ${color}">${icon}</span><div><strong>${label}</strong><br>${display}</div></div>`;
+  }).join('');
+}
+
+// ===== Bind Editable =====
+function bindEditable(){
+  document.querySelectorAll('[data-editable="true"]').forEach(el=>{
+    el.setAttribute('contenteditable',isEditing?'true':'false');
+  });
+}
+
+// ===== Toggle Edit Mode =====
+function toggleEdit(){
+  isEditing=!isEditing;
+  document.body.classList.toggle('editing',isEditing);
+  document.getElementById('editBtn').classList.toggle('active',isEditing);
+  document.getElementById('editActions').classList.toggle('show',isEditing);
+  bindEditable();
+  showToast(isEditing?'编辑模式已开启，点击文字即可修改':'编辑模式已关闭');
+}
+
+// ===== Save: collect from DOM -> resumeData -> localStorage =====
+function saveData(){
+  if(!isEditing){showToast('请先开启编辑模式');return}
+  // Collect all editable content
+  document.querySelectorAll('[data-editable="true"]').forEach(el=>{
+    const key=el.getAttribute('data-key');
+    if(!key)return;
+    // Save innerHTML for elements with children (preserves tag formatting), innerText otherwise
+    const val = el.children.length > 0 ? el.innerHTML.trim() : el.innerText.trim();
+    setNestedValue(resumeData,key,val);
+  });
+  // Save photo
+  if(resumeData.personal) resumeData.personal.photo=photoDataUrl;
+  localStorage.setItem('resumeData',JSON.stringify(resumeData));
+  bindEditable();
+  showToast('✅ 已保存到本地存储');
+}
+
+// ===== Reset =====
+function resetData(){
+  if(!confirm('确定要恢复为默认数据吗？当前修改将丢失。'))return;
+  localStorage.removeItem('resumeData');
+  resumeData=JSON.parse(JSON.stringify(defaultData));
+  renderAll();
+  if(isEditing) bindEditable();
+  photoDataUrl='';
+  document.getElementById('avatarImg').style.display='none';
+  document.getElementById('avatarInitial').style.display='';
+  showToast('已恢复默认数据');
+}
+
+// ===== Export JSON =====
+function exportJSON(){
+  // Collect latest from DOM if editing
+  if(isEditing){
+    document.querySelectorAll('[data-editable="true"]').forEach(el=>{
+      const key=el.getAttribute('data-key');
+      if(!key)return;
+      const val = el.children.length > 0 ? el.innerHTML.trim() : el.innerText.trim();
+      setNestedValue(resumeData,key,val);
+    });
+    if(resumeData.personal) resumeData.personal.photo=photoDataUrl;
+  }
+  const blob=new Blob([JSON.stringify(resumeData,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='resume_data.json';a.click();
+  showToast('📥 JSON 已导出');
+}
+
+// ===== Helper: set nested value =====
+function setNestedValue(obj,key,value){
+  const keys=key.split('.');
+  let cur=obj;
+  for(let i=0;i<keys.length-1;i++){
+    const k=keys[i];
+    if(/^\d+$/.test(k)){
+      const idx=parseInt(k);
+      if(!cur[idx])cur[idx]={};
+      cur=cur[idx];
+    }else{
+      if(!cur[k])cur[k]={};
+      cur=cur[k];
+    }
+  }
+  const last=keys[keys.length-1];
+  if(/^\d+$/.test(last)){
+    cur[parseInt(last)]=value;
+  }else{
+    cur[last]=value;
+  }
+}
+
+// ===== Photo Upload =====
+document.getElementById('avatarWrap').addEventListener('click',()=>{
+  document.getElementById('photoInput').click();
+});
+document.getElementById('photoInput').addEventListener('change',function(){
+  const file=this.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    photoDataUrl=e.target.result;
+    document.getElementById('avatarImg').src=photoDataUrl;
+    document.getElementById('avatarImg').style.display='';
+    document.getElementById('avatarInitial').style.display='none';
+    showToast('📷 照片已更新（记得保存哦）');
+  };
+  reader.readAsDataURL(file);
+});
+
+// ===== Init =====
+loadData();
+</script>
+</body>
+</html>

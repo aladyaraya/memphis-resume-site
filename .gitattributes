@@ -1,0 +1,4 @@
+# 统一换行符策略
+* text=auto
+# sh 脚本必须保持 LF 换行，否则在 macOS/Linux 上会报 "command not found"
+*.sh text eol=lf
